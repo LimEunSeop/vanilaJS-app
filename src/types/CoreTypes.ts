@@ -1,29 +1,41 @@
 export abstract class App {
   container: HTMLElement
-  name: string
+  id: string
+  displayName: string
 
-  constructor(container: HTMLElement, name: string) {
+  constructor(container: HTMLElement, id: string, displayName: string) {
     this.container = container
-    this.name = name
+    this.id = id
+    this.displayName = displayName
   }
 
   abstract render(): void
 }
 
 export abstract class ChildrenApp<T> extends App {
-  items: Array<T>
+  items: Array<T> = []
 
-  constructor(container: HTMLElement, name: string) {
-    super(container, name)
+  constructor(container: HTMLElement, id: string, displayName: string) {
+    super(container, id, displayName)
+    this.loadItems()
+  }
+
+  loadItems() {
+    if (localStorage[this.id]) {
+      this.items = JSON.parse(localStorage[this.id])
+    }
   }
 
   addItem(item: T) {
     this.items.push(item)
+    localStorage[this.id] = JSON.stringify(this.items)
   }
+
   removeItem(idx: number) {
     this.items.splice(idx, 1)
+    localStorage[this.id] = JSON.stringify(this.items)
   }
-  abstract loadItems(): void
+
   abstract getItemListContainer(): HTMLElement
 }
 
@@ -33,24 +45,3 @@ export interface ItemAddable {
   showAddPanel(): void
   getAddPanel(): HTMLElement
 }
-
-// export interface ChildrenApp<T> extends App {
-//   loadItems
-//   addItem
-//   removeItem
-// }
-
-// interface ClockConstructor {
-//   new(hour: number, minute: number): ClockInterface;
-// }
-
-// interface ClockInterface {
-//   tick(): void;
-// }
-
-// const Clock: ClockConstructor = class Clock implements ClockInterface {
-//   constructor(h: number, m: number) {}
-//   tick() {
-//     console.log('beep beep')
-//   }
-// }

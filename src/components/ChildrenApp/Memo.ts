@@ -8,8 +8,7 @@ export default class Memo extends ChildrenApp<MemoData> implements ItemAddable {
   addPanelVisible: boolean = false
 
   constructor(container: HTMLElement) {
-    super(container, '메모')
-    this.loadItems()
+    super(container, 'memo', '메모')
   }
 
   onAddFormSubmit = (e: Event) => {
@@ -32,27 +31,6 @@ export default class Memo extends ChildrenApp<MemoData> implements ItemAddable {
       item.classList.remove('active')
     })
     memoItem.classList.add('active')
-  }
-
-  loadItems() {
-    this.items = [
-      {
-        content:
-          '샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다.',
-      },
-      {
-        content:
-          '샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다.',
-      },
-      {
-        content:
-          '샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다.',
-      },
-      {
-        content:
-          '샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다. 샘플 메모입니다.',
-      },
-    ]
   }
 
   showAddPanel() {

@@ -24,7 +24,7 @@ export default class Photo extends ChildrenApp<PhotoData> {
   photoViewContainer: HTMLElement // 사진 View Area
 
   constructor(container: HTMLElement) {
-    super(container, '사진')
+    super(container, 'photo', '사진')
     this.photoViewContainer = document.createElement('figure')
     this.photoViewContainer.id = 'photo-view'
     this.loadItems()
@@ -49,6 +49,11 @@ export default class Photo extends ChildrenApp<PhotoData> {
     this.items = [...imageDB]
   }
 
+  /**
+   * 아이템 목록 요소를 세팅하여 반환합니다.
+   *
+   * emmet 구조 : ul#photo-list>li*n>button>img
+   */
   getItemListContainer(): HTMLElement {
     const listEl = document.createElement('ul')
     listEl.id = 'photo-list'
@@ -72,6 +77,11 @@ export default class Photo extends ChildrenApp<PhotoData> {
     return listEl
   }
 
+  /**
+   * 사진 뷰 부분화면을 렌더링합니다
+   *
+   * emmet 구조 : figure#photo-view>img+figcaption
+   */
   renderPhotoView() {
     this.photoViewContainer.innerHTML = ''
     const selectedImgData = this.items[this.selectedItem]
@@ -86,7 +96,7 @@ export default class Photo extends ChildrenApp<PhotoData> {
     const imgEl = document.createElement('img')
     imgEl.setAttribute('src', selectedImgData.src)
     imgEl.setAttribute('alt', selectedImgData.title)
-    imgEl.classList.add('a11yHidden')
+    imgEl.classList.add('a11yHidden') // 스크린리더엔 읽히면서 눈으로 안보이게 처리
     const figCaption = document.createElement('figcaption')
     figCaption.textContent = '선택된 사진'
     figCaption.classList.add('a11yHidden') // 스크린리더엔 읽히면서 눈으로 안보이게 처리
@@ -95,6 +105,11 @@ export default class Photo extends ChildrenApp<PhotoData> {
     this.photoViewContainer.appendChild(figCaption)
   }
 
+  /**
+   * 사진앱 전체를 렌더링합니다.
+   *
+   * emmet 구조 : main>PhotoListContainer+PhotoViewContainer
+   */
   render() {
     this.container.innerHTML = ''
 

@@ -18,7 +18,7 @@ export default class Launcher extends App {
   mainContainer: HTMLElement // 런쳐 홈, 실행중인 앱이 보여질 공간
 
   timerID: number = null
-  selectedApp: AppId = this.id // this.id : 아무것도 앱 실행 안한 현재 런져 앱 초기상태
+  selectedApp: AppId = this.id // this.id : 아무것도 앱 실행 안한 현재 런쳐 앱 초기상태
 
   constructor(container: HTMLElement) {
     super(container, 'home', '홈')
@@ -44,9 +44,9 @@ export default class Launcher extends App {
   }
 
   handleAppClick = (e: MouseEvent) => {
-    const buttonEl: HTMLButtonElement = e.target as HTMLButtonElement
-    const clickedAppId: AppId = buttonEl.dataset.appId
-
+    const buttonEl: HTMLButtonElement = e.currentTarget as HTMLButtonElement
+    const itemEl: HTMLLIElement = buttonEl.parentElement as HTMLLIElement
+    const clickedAppId: AppId = itemEl.dataset.appId
     this.appExecute(clickedAppId)
   }
 
@@ -60,6 +60,40 @@ export default class Launcher extends App {
     // 이 메서드를 호출하는 경우는 itemAddable 인터페이스 구현체인 경우이기 때문에 안전함.
     const app: ItemAddable = this.apps[this.selectedApp] as any
     app.showAddPanel()
+  }
+
+  handleAppDrag = (e: DragEvent) => {
+    const selectedItem = e.currentTarget as HTMLLIElement
+    const list = selectedItem.parentNode
+    const x = e.clientX
+    const y = e.clientY
+
+    selectedItem.classList.add('drag-sort-active')
+    const listItem = document.elementFromPoint(x, y)?.parentElement // 가장 말단 노드인 button 이 인식되므로 parent로 올라와야함
+    let swapItem: any =
+      listItem?.getAttribute('draggable') === 'true' &&
+      listItem?.parentElement.id === 'app-list' // app-list 안의 draggable 아이템이 확실한 경우
+        ? listItem
+        : selectedItem
+
+    if (list === swapItem.parentNode) {
+      swapItem =
+        swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling
+      list.insertBefore(selectedItem, swapItem)
+    }
+  }
+
+  handleAppDrop = (e: DragEvent) => {
+    const droppedItem = e.currentTarget as HTMLLIElement
+    droppedItem.classList.remove('drag-sort-active')
+
+    // localStorage 앱 순서정보 저장
+    localStorage[this.id] = JSON.stringify(
+      Array.prototype.map.call(
+        droppedItem.parentElement.children,
+        (item: HTMLLIElement) => item.dataset.appId
+      )
+    )
   }
 
   appExecute(appId: AppId) {
@@ -129,6 +163,10 @@ export default class Launcher extends App {
     return header
   }
 
+  mousedown(e: any) {
+    console.log('mousedown', e)
+  }
+
   /**
    * 런쳐의 부분 화면인 홈화면(앱리스트)를 렌더링합니다
    *
@@ -142,10 +180,13 @@ export default class Launcher extends App {
       const app = this.apps[appId]
 
       const itemEl = document.createElement('li')
+      itemEl.dataset.appId = app.id
       itemEl.setAttribute('draggable', 'true')
+      itemEl.addEventListener('drag', this.handleAppDrag)
+      itemEl.addEventListener('dragend', this.handleAppDrop)
+
       const buttonEl = document.createElement('button')
       buttonEl.textContent = app.displayName
-      buttonEl.dataset.appId = app.id
       buttonEl.addEventListener('click', this.handleAppClick)
 
       itemEl.appendChild(buttonEl)

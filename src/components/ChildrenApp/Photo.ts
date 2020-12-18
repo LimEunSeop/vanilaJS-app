@@ -36,7 +36,7 @@ export default class Photo extends ChildrenApp<PhotoData> {
     const itemId = Number(item.dataset.itemId)
     this.selectedItem = itemId
 
-    const items = item.parentElement.getElementsByTagName('li')
+    const items = item.parentElement.children
     Array.prototype.forEach.call(items, (item: HTMLLIElement) => {
       item.classList.remove('selected')
     })

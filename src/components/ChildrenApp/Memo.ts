@@ -25,7 +25,7 @@ export default class Memo extends ChildrenApp<MemoData> implements ItemAddable {
   handleMemoClick = (e: MouseEvent) => {
     const memoItem = e.target as HTMLLIElement
 
-    const siblings = memoItem.parentElement.getElementsByTagName('li')
+    const siblings = memoItem.parentElement.children
     // forEach 가 존재하지 않는 유사배열을 위한 메소드 빌려쓰기 패턴
     Array.prototype.forEach.call(siblings, (item: HTMLLIElement) => {
       item.classList.remove('active')

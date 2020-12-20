@@ -7,8 +7,8 @@ export function getTimeText(
   ISOString: string // datetime 속성에 들어갈 ISO 문자열
 } {
   const year = date.getFullYear()
-  const month = date.getMonth()
-  const day = date.getDay()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
   const hours = makeTwoDigits(date.getHours())
   const minutes = makeTwoDigits(date.getMinutes())
   const seconds = makeTwoDigits(date.getSeconds())

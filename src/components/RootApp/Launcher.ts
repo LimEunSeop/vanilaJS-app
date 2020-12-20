@@ -13,7 +13,7 @@ interface AppMap {
 
 export default class Launcher extends App {
   apps: AppMap = {}
-  appOrder: Array<AppId> // Local Storage 에 저장되고 불러올 앱 순서정보 데이터
+  _appOrder: Array<AppId> // Local Storage 에 저장되고 불러올 앱 순서정보 데이터
 
   mainContainer: HTMLElement // 런쳐 홈, 실행중인 앱이 보여질 공간
 
@@ -41,6 +41,15 @@ export default class Launcher extends App {
       // default
       this.appOrder = Object.keys(this.apps)
     }
+  }
+
+  get appOrder() {
+    return this._appOrder
+  }
+
+  set appOrder(appOrder: Array<AppId>) {
+    this._appOrder = appOrder
+    localStorage[this.id] = JSON.stringify(appOrder)
   }
 
   handleAppClick = (e: MouseEvent) => {
@@ -133,6 +142,7 @@ export default class Launcher extends App {
    */
   getHeaderContainer() {
     const header = document.createElement('header')
+    header.dataset.testid = 'header-bar'
 
     // 뒤로가기 버튼
     if (this.selectedApp !== this.id) {

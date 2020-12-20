@@ -27,7 +27,8 @@ export default class Memo extends ChildrenApp<MemoData> implements ItemAddable {
   }
 
   handleMemoClick = (e: MouseEvent) => {
-    const memoItem = e.target as HTMLLIElement
+    const memoButton = e.target as HTMLAnchorElement
+    const memoItem = memoButton.parentElement
 
     const siblings = memoItem.parentElement.children
     // forEach 가 존재하지 않는 유사배열을 위한 메소드 빌려쓰기 패턴
@@ -63,9 +64,11 @@ export default class Memo extends ChildrenApp<MemoData> implements ItemAddable {
     listEl.dataset.testid = 'memo-list'
     this.items.forEach((item, i) => {
       const itemEl = document.createElement('li')
-      itemEl.textContent = item.content
-      itemEl.addEventListener('click', this.handleMemoClick)
+      const button = document.createElement('button')
+      button.textContent = item.content
+      button.addEventListener('click', this.handleMemoClick)
 
+      itemEl.appendChild(button)
       listEl.appendChild(itemEl)
     })
     return listEl

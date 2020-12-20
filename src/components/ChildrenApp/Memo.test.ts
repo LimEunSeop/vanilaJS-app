@@ -63,20 +63,20 @@ describe('Memo App', () => {
     expect(list).toContainElement(item3)
 
     /**
-     * 각각의 메모 클릭 시 active 클래스가 추가되고 나머지 아이템은 active 클래스 사라지는가?
+     * 각각의 메모 클릭 시 item에 active 클래스가 추가되고 나머지 아이템은 active 클래스 사라지는가?
      */
     userEvent.click(item1)
-    expect(item1).toHaveClass('active')
-    expect(item2).not.toHaveClass('active')
-    expect(item3).not.toHaveClass('active')
+    expect(item1.parentElement).toHaveClass('active') // 버튼을 담고있는 부모 item(li)요소에 active 가 붙음
+    expect(item2.parentElement).not.toHaveClass('active')
+    expect(item3.parentElement).not.toHaveClass('active')
     userEvent.click(item2)
-    expect(item1).not.toHaveClass('active')
-    expect(item2).toHaveClass('active')
-    expect(item3).not.toHaveClass('active')
+    expect(item1.parentElement).not.toHaveClass('active')
+    expect(item2.parentElement).toHaveClass('active')
+    expect(item3.parentElement).not.toHaveClass('active')
     userEvent.click(item3)
-    expect(item1).not.toHaveClass('active')
-    expect(item2).not.toHaveClass('active')
-    expect(item3).toHaveClass('active')
+    expect(item1.parentElement).not.toHaveClass('active')
+    expect(item2.parentElement).not.toHaveClass('active')
+    expect(item3.parentElement).toHaveClass('active')
   })
 
   it('재 실행시 데이터가 그대로인가?', () => {

@@ -72,10 +72,9 @@ export default class Alarm
 
     for (let i = 0; i < this.items.length; i++) {
       if (JSON.stringify(this.items[i]) === JSON.stringify(convertedTimeData)) {
+        // 시간이 일치하는지
         alert(this.getTimeText(convertedTimeData))
-        this.items = this.items.filter(
-          (item) => JSON.stringify(item) !== JSON.stringify(convertedTimeData)
-        )
+        this.removeItem(i)
         return true
       }
     }
@@ -83,6 +82,7 @@ export default class Alarm
     return false
   }
 
+  // 알람 앱에서의 시간 Display 형식에 맞게 텍스트를 리턴합니다.
   getTimeText(timeItem: TimeData) {
     return `${timeItem.isAM ? '오전' : '오후'} ${makeTwoDigits(
       timeItem.hours

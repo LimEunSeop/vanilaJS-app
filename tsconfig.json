@@ -3,6 +3,10 @@
     "outDir": "./dist/",
     "noImplicitAny": true,
     "module": "es6",
-    "allowJs": false
-  }
+    "target": "es5",
+    "allowJs": false,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "exclude": ["src/**/*.test.ts", "node_modules"]
 }

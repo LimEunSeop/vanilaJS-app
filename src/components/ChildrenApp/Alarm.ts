@@ -27,9 +27,17 @@ export default class Alarm
     e.preventDefault()
 
     const form = e.target as HTMLFormElement
-    const isAM = form.ampm.value.toUpperCase() === 'AM' ? true : false
-    const hours = Number(form.hours.value)
-    const minutes = Number(form.minutes.value)
+    const ampmValue = (form.querySelector('[name=ampm]') as HTMLSelectElement)
+      .value
+    const hoursValue = (form.querySelector('[name=hours]') as HTMLSelectElement)
+      .value
+    const minutesValue = (form.querySelector(
+      '[name=minutes]'
+    ) as HTMLSelectElement).value
+
+    const isAM = ampmValue.toUpperCase() === 'AM' ? true : false
+    const hours = Number(hoursValue)
+    const minutes = Number(minutesValue)
 
     this.addItem({ isAM, hours, minutes })
     this.addPanelVisible = false
@@ -47,6 +55,25 @@ export default class Alarm
    * @return onTime boolean : 알람시간이 맞았는지의 여부를 리턴
    */
   checkTime(time: Date): boolean {
+    const convertedTimeData: TimeData = Alarm.convertDateToAlarmTime(time)
+
+    for (let i = 0; i < this.items.length; i++) {
+      if (JSON.stringify(this.items[i]) === JSON.stringify(convertedTimeData)) {
+        // 시간이 일치하는지
+        alert(Alarm.getTimeText(convertedTimeData))
+        this.removeItem(i)
+        return true
+      }
+    }
+
+    return false
+  }
+
+  /**
+   * Javascript Date 객체를 Alarm 앱 전용 Time 데이터로 변환합니다.
+   * @param time javascript Date 객체
+   */
+  static convertDateToAlarmTime(time: Date): TimeData {
     const hours = time.getHours()
     const minutes = time.getMinutes()
 
@@ -70,20 +97,11 @@ export default class Alarm
       }
     }
 
-    for (let i = 0; i < this.items.length; i++) {
-      if (JSON.stringify(this.items[i]) === JSON.stringify(convertedTimeData)) {
-        // 시간이 일치하는지
-        alert(this.getTimeText(convertedTimeData))
-        this.removeItem(i)
-        return true
-      }
-    }
-
-    return false
+    return convertedTimeData
   }
 
   // 알람 앱에서의 시간 Display 형식에 맞게 텍스트를 리턴합니다.
-  getTimeText(timeItem: TimeData) {
+  static getTimeText(timeItem: TimeData) {
     return `${timeItem.isAM ? '오전' : '오후'} ${makeTwoDigits(
       timeItem.hours
     )}시 ${makeTwoDigits(timeItem.minutes)}분`
@@ -118,6 +136,7 @@ export default class Alarm
   getAddPanel() {
     const form = document.createElement('form')
     form.id = 'alarm-form'
+    form.dataset.testid = 'alarm-form'
     form.addEventListener('submit', this.onAddFormSubmit)
 
     const ampmSelect = document.createElement('select')
@@ -174,6 +193,7 @@ export default class Alarm
   getItemListContainer() {
     const listEl = document.createElement('ul')
     listEl.id = 'alarm-list'
+    listEl.dataset.testid = 'alarm-list'
     this.items.forEach((item, i) => {
       const itemEl = document.createElement('li')
 
@@ -182,7 +202,7 @@ export default class Alarm
         'datetime',
         makeTwoDigits(item.hours) + ':' + makeTwoDigits(item.minutes)
       )
-      timeEl.textContent = this.getTimeText(item)
+      timeEl.textContent = Alarm.getTimeText(item)
       itemEl.appendChild(timeEl)
 
       const removeButton = document.createElement('button')

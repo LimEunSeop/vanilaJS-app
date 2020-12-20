@@ -13,27 +13,36 @@ export abstract class App {
 }
 
 export abstract class ChildrenApp<T> extends App {
-  items: Array<T> = []
+  _items: Array<T> = []
 
   constructor(container: HTMLElement, id: string, displayName: string) {
     super(container, id, displayName)
     this.loadItems()
   }
 
+  get items() {
+    return this._items
+  }
+
+  set items(items: Array<T>) {
+    this._items = items
+    localStorage[this.id] = JSON.stringify(this._items)
+  }
+
   loadItems() {
     if (localStorage[this.id]) {
-      this.items = JSON.parse(localStorage[this.id])
+      this._items = JSON.parse(localStorage[this.id])
     }
   }
 
   addItem(item: T) {
-    this.items.push(item)
-    localStorage[this.id] = JSON.stringify(this.items)
+    this._items.push(item)
+    localStorage[this.id] = JSON.stringify(this._items)
   }
 
   removeItem(idx: number) {
-    this.items.splice(idx, 1)
-    localStorage[this.id] = JSON.stringify(this.items)
+    this._items.splice(idx, 1)
+    localStorage[this.id] = JSON.stringify(this._items)
   }
 
   abstract getItemListContainer(): HTMLElement

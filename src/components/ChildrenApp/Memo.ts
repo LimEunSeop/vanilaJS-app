@@ -14,7 +14,11 @@ export default class Memo extends ChildrenApp<MemoData> implements ItemAddable {
   onAddFormSubmit = (e: Event) => {
     e.preventDefault()
     const form = e.target as HTMLFormElement
-    const content = form.content.value.trim()
+    const contentValue = (form.querySelector(
+      '[name=content]'
+    ) as HTMLTextAreaElement).value
+
+    const content = contentValue.trim()
 
     this.addItem({ content })
     this.addPanelVisible = false
@@ -41,6 +45,7 @@ export default class Memo extends ChildrenApp<MemoData> implements ItemAddable {
   getAddPanel(): HTMLFormElement {
     const form = document.createElement('form')
     form.id = 'memo-form'
+    form.dataset.testid = 'memo-form'
     form.addEventListener('submit', this.onAddFormSubmit)
 
     const textInput = document.createElement('input')
@@ -55,6 +60,7 @@ export default class Memo extends ChildrenApp<MemoData> implements ItemAddable {
   getItemListContainer(): HTMLUListElement {
     const listEl = document.createElement('ul')
     listEl.id = 'memo-list'
+    listEl.dataset.testid = 'memo-list'
     this.items.forEach((item, i) => {
       const itemEl = document.createElement('li')
       itemEl.textContent = item.content

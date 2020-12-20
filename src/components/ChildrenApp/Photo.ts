@@ -1,6 +1,6 @@
 import { ChildrenApp } from '../../types/CoreTypes'
 
-const imageDB: Array<PhotoData> = [
+export const imageDB: Array<PhotoData> = [
   { title: '석양과 함께있는 에펠탑', src: 'images/1.jpg' },
   { title: '석양에 겹친 나무', src: 'images/2.jpg' },
   { title: '3명이 멋진배경과 함께 농구', src: 'images/3.jpg' },
@@ -27,6 +27,7 @@ export default class Photo extends ChildrenApp<PhotoData> {
     super(container, 'photo', '사진')
     this.photoViewContainer = document.createElement('figure')
     this.photoViewContainer.id = 'photo-view'
+    this.photoViewContainer.dataset.testid = 'photo-view'
     this.loadItems()
   }
 
@@ -57,6 +58,7 @@ export default class Photo extends ChildrenApp<PhotoData> {
   getItemListContainer(): HTMLElement {
     const listEl = document.createElement('ul')
     listEl.id = 'photo-list'
+    listEl.dataset.testid = 'photo-list'
 
     this.items.forEach((item, i) => {
       // item 정보(selected, itemId)는 li 요소가 관리하고, 이벤트 관련은 버튼이 담당하는 방식
@@ -64,6 +66,7 @@ export default class Photo extends ChildrenApp<PhotoData> {
       const itemEl = document.createElement('li')
       if (i === this.selectedItem) itemEl.classList.add('selected')
       itemEl.dataset.itemId = String(i)
+      itemEl.dataset.testid = 'photo-item'
       const buttonEl = document.createElement('button')
       buttonEl.addEventListener('click', this.handleItemClick)
       const imgEl = document.createElement('img')

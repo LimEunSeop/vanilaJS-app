@@ -1,7 +1,4 @@
-# 11번가 검색개발팀 Front 분야 과제전형 - 임은섭
-
-안녕하세요, 지원자 임은섭 입니다.
-읽어주셔서 감사드리며, 제 이력서는 [https://github.com/limeunseop/my-resume](https://github.com/limeunseop/my-resume) 를 참고 해주시기 바랍니다.
+# VanilaJS 로 작성한 APP
 
 - [실행 방법](#실행-방법)
   - [로컬서버실행](#로컬서버실행)

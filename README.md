@@ -1,6 +1,6 @@
 # VanilaJS 로 작성한 APP
 
-https://img.shields.io/badge/link-https%3A%2F%2Flimeunseop.github.io%2FvanilaJS--app%2Fdist-brightgreen
+<a href="https://limeunseop.github.io/vanilaJS-app/dist">![link](https://img.shields.io/badge/link-https%3A%2F%2Flimeunseop.github.io%2FvanilaJS--app%2Fdist-brightgreen)</a>
 
 홈 화면에서 메모, 알림, 사진 앱을 간단히 실행시키는 기본적인 SPA APP 입니다.
 
